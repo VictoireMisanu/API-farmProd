@@ -1,4 +1,6 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
+// import Farm from '../../app/models/farm.js'
+// import Category from '../../app/models/category.js'
 import Product from '../../app/models/product.js'
 // import { faker } from '@faker-js/faker'
 import { DateTime } from 'luxon'
@@ -7,16 +9,22 @@ export default class ProductSeeder extends BaseSeeder {
   public async run() {
 
     const product = await Product.create({
-      product_name: 'Dindon',
-      product_descript:'Dindon rouge',
+      product_name: 'Cobaye',
+      product_descript:"Cobaye à poils lisses",
       birth_date:new Date('2024-12-30'),
       life_duration:10,
-      product_image:'https://res.cloudinary.com/ddwgsvzlw/image/upload/v1735054489/Dindon1_xxqmc4.jpg',
+      product_image:'https://res.cloudinary.com/ddwgsvzlw/image/upload/v1735054490/Cobaye4_ilgcbu.jpg',
       price:15,
-      farm:2,
-      category:1,
+      farm:3,
+      category:2,
        createdAt: DateTime.now(),
        updatedAt: DateTime.now() })
+
+    // const category = await Category.create({
+    //   category_designation: 'Volaille',
+      
+    //    createdAt: DateTime.now(),
+    //    updatedAt: DateTime.now() },)
   
     await product.save()
   }
