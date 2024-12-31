@@ -10,5 +10,7 @@
 import router from '@adonisjs/core/services/router'
 
 const ProductsController = () => import('../app/controllers/products_controller.js')
+const FarmsController = () => import('../app/controllers/farms_controller.js')
 
 router.get('/', [ProductsController, 'index'])
+router.get('/farms', [FarmsController, 'farmsList'])
