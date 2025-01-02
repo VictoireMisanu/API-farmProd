@@ -14,6 +14,10 @@ export default class Farm extends BaseModel {
   @column()
   declare work_field: string
 
+  @column()
+  declare farm_image: string
+
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

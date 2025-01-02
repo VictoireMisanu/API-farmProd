@@ -9,20 +9,19 @@ export default class ProductSeeder extends BaseSeeder {
   public async run() {
 
     const product = await Product.create({
-      product_name: 'Cobaye',
-      product_descript:"Cobaye à poils lisses",
+      product_name: 'Lapin',
+      product_descript:"Lapin malin",
       birth_date:new Date('2024-12-30'),
-      life_duration:10,
-      product_image:'https://res.cloudinary.com/ddwgsvzlw/image/upload/v1735054490/Cobaye4_ilgcbu.jpg',
-      price:15,
+      life_duration:15,
+      product_image:'https://res.cloudinary.com/ddwgsvzlw/image/upload/v1734886308/twoLapin_xcxvwm.jpg',
+      price:20,
       farm:3,
-      category:2,
+      category:3,
        createdAt: DateTime.now(),
        updatedAt: DateTime.now() })
 
     // const category = await Category.create({
     //   category_designation: 'Volaille',
-      
     //    createdAt: DateTime.now(),
     //    updatedAt: DateTime.now() },)
   

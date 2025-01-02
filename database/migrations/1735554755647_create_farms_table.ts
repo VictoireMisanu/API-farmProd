@@ -9,6 +9,7 @@ export default class extends BaseSchema {
       table.string('enterprise_name').notNullable()
       table.string('enterprise_location').notNullable()
       table.string('work_field').notNullable()
+      table.string('farm_image').notNullable()
 
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
