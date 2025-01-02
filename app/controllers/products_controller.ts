@@ -3,7 +3,7 @@ import Product from '#models/product'
 
 export default class ProductsController {
 
-    public async index(ctx: HttpContext) {
+    public async productsList(ctx: HttpContext) {
         try {
           const products = await Product.all()
           return ctx.response.status(200).json(products)
