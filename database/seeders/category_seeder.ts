@@ -5,13 +5,19 @@ import { DateTime } from 'luxon'
 export default class extends BaseSeeder {
   async run() {
     // Write your database queries inside the run method
-    const category = await Category.create({
-      category_designation: 'Grand bétail',
+    await Category.createMany([
+      {
+        category_designation: 'Petit bétail',
 
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    })
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      },
+      {
+        category_designation: 'Volaille',
 
-    await category.save()
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      },
+    ])
   }
 }
