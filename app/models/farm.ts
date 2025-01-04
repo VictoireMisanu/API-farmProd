@@ -17,7 +17,6 @@ export default class Farm extends BaseModel {
   @column()
   declare farm_image: string
 
-
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
