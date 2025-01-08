@@ -13,4 +13,5 @@ const ProductsController = () => import('../app/controllers/products_controller.
 const FarmsController = () => import('../app/controllers/farms_controller.js')
 
 router.get('/', [ProductsController, 'productsList'])
+// router.get('/products', [ProductsController, 'productsList'])
 router.get('/products', [FarmsController, 'farmsList'])
