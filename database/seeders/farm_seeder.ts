@@ -10,6 +10,15 @@ export default class extends BaseSeeder {
       {
         enterprise_name: 'Ku Dia Bilenga',
         enterprise_location: 'Kasaï cental',
+        work_field: 'Elevage grand bétail',
+        farm_image: 'https://res.cloudinary.com/ddwgsvzlw/image/upload/v1735812648/bee_gpwvvd.png',
+
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      },
+      {
+        enterprise_name: 'Ku Dia Bilenga',
+        enterprise_location: 'Kasaï cental',
         work_field: 'Elevage petit bétail',
         farm_image: 'https://res.cloudinary.com/ddwgsvzlw/image/upload/v1735812648/bee_gpwvvd.png',
 

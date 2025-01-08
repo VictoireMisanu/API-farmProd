@@ -7,6 +7,12 @@ export default class extends BaseSeeder {
     // Write your database queries inside the run method
     await Category.createMany([
       {
+        category_designation: 'Grand bétail',
+
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      },
+      {
         category_designation: 'Petit bétail',
 
         createdAt: DateTime.now(),

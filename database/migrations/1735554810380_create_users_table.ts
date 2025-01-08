@@ -7,8 +7,8 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('user_id').primary()
       table.string('user_name').notNullable()
-      table.string('user_mailAddress').notNullable().unique()
-      table.string('user_passWord').notNullable()
+      table.string('user_email').notNullable().unique()
+      table.string('user_password').notNullable()
       table.integer('user_role').unsigned().references('role_id').inTable('roles')
       table.string('user_address').notNullable()
       table.string('user_picture').notNullable()

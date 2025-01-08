@@ -17,10 +17,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare user_name: string
 
   @column()
-  declare user_mailAddress: string
+  declare user_email: string
 
   @column()
-  declare user_passWord: string
+  declare user_password: string
 
   @column()
   declare user_role: number
@@ -29,7 +29,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare user_address: string
 
   @column()
-  declare farm_id: number
+  declare user_picture: string
+
+  @column()
+  declare farm_id: number | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
