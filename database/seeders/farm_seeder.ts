@@ -8,8 +8,8 @@ export default class extends BaseSeeder {
 
     await Farm.createMany([
       {
-        enterprise_name: 'Ku Dia Bilenga',
-        enterprise_location: 'Kasaï cental',
+        enterprise_name: 'Ku Dia Mbote',
+        enterprise_location: 'Kikwit Sud',
         work_field: 'Elevage grand bétail',
         farm_image: 'https://res.cloudinary.com/ddwgsvzlw/image/upload/v1735812648/bee_gpwvvd.png',
 
@@ -26,8 +26,8 @@ export default class extends BaseSeeder {
         updatedAt: DateTime.now(),
       },
       {
-        enterprise_name: 'Ku Dia Mbote',
-        enterprise_location: 'Kikwit Sud',
+        enterprise_name: 'Afia Ndjema',
+        enterprise_location: 'Kinshasa Maluku',
         work_field: 'Elevage volaille',
         farm_image: 'https://res.cloudinary.com/ddwgsvzlw/image/upload/v1735812648/bee_gpwvvd.png',
 
