@@ -7,11 +7,11 @@ import { defineConfig } from '@adonisjs/cors'
  * https://docs.adonisjs.com/guides/security/cors
  */
 const corsConfig = defineConfig({
+  origin: ['http://localhost:5173'],
   enabled: true,
-  origin: true,
   methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
   headers: true,
-  exposeHeaders: [],
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
   credentials: true,
   maxAge: 90,
 })
