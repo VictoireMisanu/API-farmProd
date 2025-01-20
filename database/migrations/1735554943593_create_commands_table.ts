@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.date('command_date').notNullable()
       table.decimal('global_price', 10, 2).notNullable()
       table.integer('quantity').notNullable()
-      table.integer('user').unsigned().references('user_id').inTable('users')
+      table.integer('user').unsigned().references('userId').inTable('users')
       table.integer('product').unsigned().references('product_id').inTable('products')
       table.string('command_num').notNullable()
       table.timestamp('created_at', { useTz: true })

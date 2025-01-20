@@ -1,27 +1,31 @@
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
-import { createAccountValidator } from '../validators/auth.js'
-import hash from '@adonisjs/core/services/hash'
+import { createAccountValidator, loginValidator } from '../validators/auth.js'
+
+// import hash from '@adonisjs/core/services/hash'
 
 export default class AuthController {
-  async registerAccountInfo({ request, response }: HttpContext) {
+  async registerAccountInfo({ request }: HttpContext) {
     try {
+      console.log(request.body())
       const { userPicture, userName, userEmail, userPassword } =
         await request.validateUsing(createAccountValidator)
+      console.log(userPicture, userName, userEmail, userPassword, 'iswa')
+      const user = await User.create({ userPicture, userName, userEmail, userPassword })
+      const token = User.accessTokens.create(user)
+      console.log(user, token)
 
-      await User.create({ userPicture, userName, userEmail, userPassword })
-
-      return response.status(201).json({
-        message: 'Compte créé avec succès',
-      })
+      return {
+        token,
+        userInfo: { userPicture, userName, userEmail, userPassword },
+      }
     } catch (error) {
-      return response.status(400).json({
-        error: 'Erreur lors de la création du compte',
-      })
+      console.log(error)
+      return error
     }
   }
 
-  async authenticateUser({ request, response }: HttpContext) {
+  async authenticateUser({ request }: HttpContext) {
     // const { email, password } = request.only(['email', 'password'])
     /**
      * Find a user by email. Return error if a user does
@@ -32,22 +36,17 @@ export default class AuthController {
     //   response.flash('Invalid credentials')
     // }
     try {
-      const { userEmail, userPassword } = request.only(['userEmail', 'userPassword'])
-      const user = await User.findBy('email', userEmail)
+      const { email, password } = await request.validateUsing(loginValidator)
 
-      if (!user) {
-        response.abort('Invalid credentials')
-      } else {
-        await hash.verify(userPassword, userPassword)
-        // await auth.use('web').login(user)
-        // session.flash('success', 'Connexion reussie')
-        return response.redirect('/home')
-      }
+      const user = await User.verifyCredentials(email, password)
+      const userInfo = await User.findBy('userEmail', email)
+      const userToken = { tokenData: User.accessTokens.create(user), userInfo }
+      return userToken
       // const client = await User.verifyCredentials(email, code)
     } catch (error) {
       console.error(error)
       // session.flash('error', "Le nom ou le code d'accès est incorrect")
-      return response.redirect().back()
+      return error
     }
 
     /**
