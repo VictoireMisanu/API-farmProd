@@ -1,31 +1,39 @@
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 import { createAccountValidator, loginValidator } from '../validators/auth.js'
-
+import bcrypt from 'bcrypt'
 // import hash from '@adonisjs/core/services/hash'
 
 export default class AuthController {
-  async registerAccountInfo({ request }: HttpContext) {
+  async registerAccountInfo({ request,response }: HttpContext) {
     try {
-      console.log(request.body())
-      const { userPicture, userName, userEmail, userPassword } =
-        await request.validateUsing(createAccountValidator)
-      console.log(userPicture, userName, userEmail, userPassword, 'iswa')
-      const user = await User.create({ userPicture, userName, userEmail, userPassword })
-      const token = User.accessTokens.create(user)
-      console.log(user, token)
+      console.log(request.body().userPicture)
+      const { user_picture, user_name, user_email, user_password, user_address } = request.body()
+      //await request.validateUsing(createAccountValidator)
+      console.log(user_picture, user_name, user_email, user_password)
+      const hashedPassword = await bcrypt.hash(user_password, 10)
+      // Save the user with the hashed password
+      const user = await User.create({
+        user_picture,
+        user_name,
+        user_email,
+        user_password: hashedPassword,
+        user_address,
+      })
 
-      return {
-        token,
-        userInfo: { userPicture, userName, userEmail, userPassword },
-      }
+      return response.status(201).json({
+        userInfo: { user_picture, user_name, user_email, user_address },
+      })
     } catch (error) {
       console.log(error)
-      return error
+      return response.status(500).json({
+        message: "Une erreur est survenue lors de la création de l'utilisateur.",
+        error: error.message,
+      })
     }
   }
 
-  async authenticateUser({ request }: HttpContext) {
+  async authenticateUser({ request, response }: HttpContext) {
     // const { email, password } = request.only(['email', 'password'])
     /**
      * Find a user by email. Return error if a user does
@@ -37,16 +45,32 @@ export default class AuthController {
     // }
     try {
       const { email, password } = await request.validateUsing(loginValidator)
-
-      const user = await User.verifyCredentials(email, password)
-      const userInfo = await User.findBy('userEmail', email)
-      const userToken = { tokenData: User.accessTokens.create(user), userInfo }
-      return userToken
+      const user = await User.findBy('user_email', email)
+      if (!user) {
+        //response.flash('Invalid credentials')
+        return
+      }
+      const passwordValid = await bcrypt.compare(password, user.user_password)
+      if (!passwordValid) {
+        return response.status(401).json({ message: 'Identifiants invalides' })
+      }
+      const token = await User.accessTokens.create(user)
+      return response.status(200).json({
+        token,
+        userInfo: {
+          user_picture: user.user_picture,
+          user_name: user.user_name,
+          user_email: user.user_email,
+          user_address: user.user_address,
+        },
+      })
       // const client = await User.verifyCredentials(email, code)
     } catch (error) {
       console.error(error)
-      // session.flash('error', "Le nom ou le code d'accès est incorrect")
-      return error
+      return response.status(500).json({
+        message: "Une erreur est survenue lors de l'authentification.",
+        error: error.message,
+      })
     }
 
     /**
