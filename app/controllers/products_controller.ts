@@ -13,4 +13,16 @@ export default class ProductsController {
       })
     }
   }
+
+  public async productDetail(ctx: HttpContext) {
+    try {
+      const product = await Product.find(ctx.params.id)
+      return ctx.response.status(200).json(product)
+    } catch (error) {
+      return ctx.response.status(500).json({
+        message: 'Erreur lors de la récupération du produit',
+        error: error.message,
+      })
+    }
+  }
 }

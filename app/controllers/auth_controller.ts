@@ -7,8 +7,9 @@ import bcrypt from 'bcrypt'
 export default class AuthController {
   async registerAccountInfo({ request, response }: HttpContext) {
     try {
-      console.log(request.body().userPicture)
-      const { user_picture, user_name, user_email, user_password, user_address } = request.body()
+      console.log(request.body()?.user_picture)
+      const { user_picture, user_name, user_email, user_password, user_address } =
+        await request.validateUsing(createAccountValidator)
       //await request.validateUsing(createAccountValidator)
       console.log(user_picture, user_name, user_email, user_password)
       const hashedPassword = await bcrypt.hash(user_password, 10)
@@ -44,7 +45,7 @@ export default class AuthController {
     //   response.flash('Invalid credentials')
     // }
     try {
-      const { email, password } = await request.all()
+      const { email, password } = await request.validateUsing(loginValidator)
       console.log(email, password)
       const user = await User.findBy('user_email', email)
       if (!user) {
