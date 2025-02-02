@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 // import hash from '@adonisjs/core/services/hash'
 
 export default class AuthController {
-  async registerAccountInfo({ request,response }: HttpContext) {
+  async registerAccountInfo({ request, response }: HttpContext) {
     try {
       console.log(request.body().userPicture)
       const { user_picture, user_name, user_email, user_password, user_address } = request.body()
@@ -44,7 +44,8 @@ export default class AuthController {
     //   response.flash('Invalid credentials')
     // }
     try {
-      const { email, password } = await request.validateUsing(loginValidator)
+      const { email, password } = await request.all()
+      console.log(email, password)
       const user = await User.findBy('user_email', email)
       if (!user) {
         //response.flash('Invalid credentials')
