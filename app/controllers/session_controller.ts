@@ -4,13 +4,13 @@ import User from '#models/user'
 export default class SessionController {
   async store({ request, auth, response }: HttpContext) {
     const { email, password } = request.only(['email', 'password'])
-    const user = await User.verifyCredentials(email, password)
-    await auth.use('web').login(user)
+    await User.verifyCredentials(email, password)
+    await auth.use('api')
     response.redirect().toRoute('home')
   }
 
   async destroy({ auth, response }: HttpContext) {
-    await auth.use('web').logout()
+    await auth.use('api')
     response.redirect().toRoute('home')
   }
 }

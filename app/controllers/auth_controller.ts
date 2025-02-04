@@ -1,24 +1,24 @@
 import User from '#models/user'
 import { HttpContext } from '@adonisjs/core/http'
 import { createAccountValidator, loginValidator } from '../validators/auth.js'
-import bcrypt from 'bcrypt'
-// import hash from '@adonisjs/core/services/hash'
+import hash from '@adonisjs/core/services/hash'
 
 export default class AuthController {
   async registerAccountInfo({ request, response }: HttpContext) {
     try {
       console.log(request.body()?.user_picture)
+
       const { user_picture, user_name, user_email, user_password, user_address } =
         await request.validateUsing(createAccountValidator)
       //await request.validateUsing(createAccountValidator)
       console.log(user_picture, user_name, user_email, user_password)
-      const hashedPassword = await bcrypt.hash(user_password, 10)
+      // const hashedPassword = await bcrypt.hash(user_password, 10)
       // Save the user with the hashed password
-      const user = await User.create({
+      await User.create({
         user_picture,
         user_name,
         user_email,
-        user_password: hashedPassword,
+        user_password,
         user_address,
       })
 
@@ -35,27 +35,19 @@ export default class AuthController {
   }
 
   async authenticateUser({ request, response }: HttpContext) {
-    // const { email, password } = request.only(['email', 'password'])
-    /**
-     * Find a user by email. Return error if a user does
-     * not exists
-     */
-    // let user = await User.findBy('email', email)
-    // if (!user) {
-    //   response.flash('Invalid credentials')
-    // }
     try {
       const { email, password } = await request.validateUsing(loginValidator)
       console.log(email, password)
       const user = await User.findBy('user_email', email)
       if (!user) {
-        //response.flash('Invalid credentials')
-        return
+        return response.status(401).json({ message: 'Identifiants invalides' })
       }
-      const passwordValid = await bcrypt.compare(password, user.user_password)
+      const passwordValid = await hash.verify(user.user_password, password)
+      console.log(user.user_password)
       if (!passwordValid) {
         return response.status(401).json({ message: 'Identifiants invalides' })
       }
+
       const token = await User.accessTokens.create(user)
       return response.status(200).json({
         token,
@@ -66,7 +58,6 @@ export default class AuthController {
           user_address: user.user_address,
         },
       })
-      // const client = await User.verifyCredentials(email, code)
     } catch (error) {
       console.error(error)
       return response.status(500).json({
@@ -74,14 +65,6 @@ export default class AuthController {
         error: error.message,
       })
     }
-
-    /**
-     * Verify the password using the hash service
-     */
-    // await hash.verify(password, password)
-    // user = await User.verifyCredentials(email, password)
-    // console.log('is authenticated')
-    // return response.redirect('/home')
   }
   // async googleRedirection({ ally }: HttpContext) {
   //   ally.use('google').redirect((req) => {
