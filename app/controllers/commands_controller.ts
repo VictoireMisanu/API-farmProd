@@ -5,21 +5,25 @@ import CommandItem from '#models/command_item'
 export default class CommandsController {
   public async store({ request, response, auth }: HttpContext) {
     const { products } = request.only(['products'])
-
     try {
-      await Command.create({
-        user: auth.user!.id,
-        status: 'en_attente',
+      console.log(auth)
+      // Récupérer l'utilisateur authentifié
+      //const user = await auth.authenticate()
+
+      //console.log(user)
+
+      const command = await Command.create({
+        user: auth.user?.id,
         total_amount: products.reduce(
           (sum: number, product: { price: any; quantity: number }) =>
             sum + Number(product.price) * product.quantity,
           0
         ),
       })
-
+      console.log(auth.check())
       await CommandItem.createMany(
         products.map((product: { productId: any; quantity: number; price: any }) => ({
-          commandId: Command.$getColumn('command_id'),
+          commandId: command.command_id,
           productId: product.productId,
           quantity: product.quantity,
           unitPrice: Number(product.price),
@@ -29,9 +33,9 @@ export default class CommandsController {
 
       return response.json({
         success: true,
-        comandNumber: Command.$getColumn('order_number'),
       })
     } catch (error) {
+      console.log(error)
       return response.status(500).json({
         success: false,
         message: 'Erreur lors de la création de la commande',
