@@ -10,8 +10,10 @@ export default class AuthController {
 
       const { user_picture, user_name, user_email, user_password, user_address } =
         await request.validateUsing(createAccountValidator)
+        console.log(user_picture);
+        
       //await request.validateUsing(createAccountValidator)
-      console.log(user_picture, user_name, user_email, user_password)
+      // console.log(user_picture, user_name, user_email, user_password)
       // const hashedPassword = await bcrypt.hash(user_password, 10)
       // Save the user with the hashed password
       await User.create({
@@ -52,6 +54,7 @@ export default class AuthController {
       return response.status(200).json({
         token,
         userInfo: {
+          user_id : user.id,
           user_picture: user.user_picture,
           user_name: user.user_name,
           user_email: user.user_email,

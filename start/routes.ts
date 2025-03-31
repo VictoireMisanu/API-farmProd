@@ -23,6 +23,8 @@ router.post('/signin', [AuthController, 'authenticateUser'])
 router.post('/signup', [AuthController, 'registerAccountInfo'])
 router.get('/products/:id', [ProductsController, 'productDetail'])
 router.post('/command', [CommandsController, 'store'])
+router.get('/show/command', [CommandsController, 'get'])
+router.get('/show/command/item', [CommandsController, 'getItem'])
 
 // router
 // router

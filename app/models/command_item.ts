@@ -9,16 +9,16 @@ export default class CommandItem extends BaseModel {
   declare id: number
 
   @column()
-  declare command_id: number
+  declare commandId: number
 
   @column()
-  declare product_id: number
+  declare productId: number
 
   @column()
-  declare unit_price: number
+  declare quantity: number
 
-  @column()
-  declare total_price: number
+  // @column()
+  // declare total_price: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
