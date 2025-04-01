@@ -8,7 +8,7 @@
 */
 
 // import { Route } from '@adonisjs/core/http'
-import { middleware } from './kernel.js'
+// import { middleware } from './kernel.js'
 import router from '@adonisjs/core/services/router'
 
 const ProductsController = () => import('../app/controllers/products_controller.js')
