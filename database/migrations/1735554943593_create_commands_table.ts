@@ -6,10 +6,7 @@ export default class extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-<<<<<<< HEAD
       // table.string('order_number').notNullable().unique()
-=======
->>>>>>> 1e95e56cacb8ce49bff8ba015628c07c22017c4d
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.decimal('total_amount', 10, 2).notNullable()
 
