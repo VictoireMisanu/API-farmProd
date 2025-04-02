@@ -4,7 +4,7 @@ import CommandItem from '#models/command_item'
 import User from '#models/user'
 
 export default class CommandsController {
-  public async store({ request, response, auth }: HttpContext) {
+  public async store({ request }: HttpContext) {
 
 
     const { commands } = request.all()
@@ -31,7 +31,7 @@ export default class CommandsController {
     })
 
     for (let i = 0; i < commands.length; i++) {
-      const commandItem = await CommandItem.create({
+       await CommandItem.create({
         quantity: commands[i].quantity,
         commandId: command.id,
         productId: commands[i].product
@@ -84,13 +84,13 @@ export default class CommandsController {
     //     })
     //   }
   }
-  public async get({ request, response, auth }: HttpContext) {
+  public async get({ response }: HttpContext) {
     const command = await Command.all()
 
     return response.json(command)
   }
 
-  public async getItem({ request, response, auth }: HttpContext) {
+  public async getItem({ response}: HttpContext) {
     const commandItem = await User.all()
 
     return response.json(commandItem)
